@@ -1,2 +1,4 @@
 .vagrant
+/custom_image/main
+/go_code/main
 
