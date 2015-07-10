@@ -1,0 +1,24 @@
+#!/bin/bash
+
+pushd `dirname $0` > /dev/null
+
+function error() {
+	echo "Error: $1"
+	exit 1
+}
+
+image_name="golang"
+image_tag="1.4.2-lint"
+image="$image_name:$image_tag"
+
+function check_image() {
+	docker images $image_name | grep $image_tag > /dev/null
+	if [ $? -eq 1 ]; then
+		echo "Unable to find cached image: $image"
+		echo "Trying to pull image or start building it from scratch..."
+		docker pull $image || docker build -t $image . || error "Unable to build Docker image"
+	fi
+}
+
+check_image
+docker run --rm -v "`pwd`:/workspace" -w /workspace $image ./run $@

@@ -14,29 +14,15 @@ function error() {
 
 [ $# -eq 0 ] && usage
 
-image_name="golang"
-image_tag="1.4.2-lint"
-image="$image_name:$image_tag"
-
-function check_image() {
-	docker images $image_name | grep $image_tag > /dev/null
-	if [ $? -eq 1 ]; then
-		echo "Unable to find cached image: $image"
-		echo "Trying to pull image or start building it from scratch..."
-		docker pull $image || docker build -t $image .
-	fi
-}
-
 if [ $1 == "build" ]; then
-	check_image
 	echo "Running Go-Lint..."
-	docker run --rm -v "`pwd`:/workspace" -w /workspace $image /go/bin/golint main.go
+	golint main.go
 	echo "Building project..."
-	docker run --rm -v "`pwd`:/workspace" -w /workspace $image go build main.go || error "Unable to build project"
+	go build main.go || error "Unable to build project"
 	echo "Done... try executing using: $0 app"
 fi
 
 if [ $1 == "app" ]; then
-	[ ! -x main ] && error "Build project first: $0 build"
+	[ ! -x main ] && error "Build project first"
         ./main
 fi

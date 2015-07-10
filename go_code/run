@@ -15,7 +15,8 @@ function error() {
 [ $# -eq 0 ] && usage
 
 if [ $1 == "build" ]; then
-	docker run --rm -v "`pwd`:/workspace" -w /workspace golang:1.4.2 go build main.go || error "Unable to build project"
+	echo "Building project..."
+	go build main.go || error "Unable to build project"
 	echo "Done... try executing using: $0 app"
 fi
 
