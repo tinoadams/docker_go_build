@@ -17,7 +17,7 @@ $ vagrant ssh
 
 ```
 $ cd /vagrant/go_code
-$ ./run build
+$ ./docker_run build
 $ ./run app
 ```
 
@@ -25,6 +25,6 @@ $ ./run app
 
 ```
 $ cd /vagrant/custom_image
-$ ./run build
+$ ./docker_run build
 $ ./run app
 ```
