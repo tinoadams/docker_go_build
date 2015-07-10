@@ -29,6 +29,9 @@ function check_image() {
 
 if [ $1 == "build" ]; then
 	check_image
+	echo "Running Go-Lint..."
+	docker run --rm -v "`pwd`:/workspace" -w /workspace $image /go/bin/golint main.go
+	echo "Building project..."
 	docker run --rm -v "`pwd`:/workspace" -w /workspace $image go build main.go || error "Unable to build project"
 	echo "Done... try executing using: $0 app"
 fi
